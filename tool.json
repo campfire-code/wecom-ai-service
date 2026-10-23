@@ -1,0 +1,10 @@
+{
+  "id": "w04",
+  "slug": "wecom-ai-service",
+  "name": "企微 / 公众号 AI 客服",
+  "version": "2.2.1-campfire.1",
+  "repo": "campfire-code/wecom-ai-service",
+  "license": "MIT",
+  "delivery": "docker",
+  "upstream": { "repo": "zhayujie/CowAgent", "license": "MIT" }
+}

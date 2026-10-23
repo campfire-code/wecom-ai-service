@@ -445,17 +445,20 @@ config = Config()
 
 def _mask_value(val):
     """Mask a sensitive string value, keeping first 3 and last 3 chars."""
-    if not isinstance(val, str) or len(val) <= 8:
+    if not isinstance(val, str):
         return val
+    if len(val) <= 8:
+        return "*" * len(val)  # campfire: short secrets (e.g. webhook tokens) are fully masked
     return val[0:3] + "*" * 5 + val[-3:]
 
 
 def _mask_sensitive_recursive(obj):
-    """Recursively mask values whose keys contain 'key' or 'secret'."""
+    """Recursively mask values whose keys contain 'key', 'secret', 'token' or 'password'."""
     if isinstance(obj, dict):
         masked = {}
         for k, v in obj.items():
-            if ("key" in k or "secret" in k) and isinstance(v, str):
+            # campfire: also mask token / password so the startup log never prints them
+            if any(w in k for w in ("key", "secret", "token", "password")) and isinstance(v, str):
                 masked[k] = _mask_value(v)
             else:
                 masked[k] = _mask_sensitive_recursive(v)

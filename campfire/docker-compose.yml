@@ -1,0 +1,16 @@
+services:
+  wecom-ai-service:
+    image: ghcr.io/campfire-code/wecom-ai-service:latest
+    container_name: wecom-ai-service
+    restart: always
+    env_file: .env
+    environment:
+      TZ: Asia/Shanghai
+      COW_DATA_DIR: /home/agent/.cow
+    ports:
+      - "9888:9888" # 微信客服回调端口（CHANNEL_TYPE 含 wechat_kf 时）
+      - "9898:9898" # 企业微信自建应用回调端口（CHANNEL_TYPE 含 wechatcom_app 时）
+      - "8080:8080" # 微信公众号回调端口（CHANNEL_TYPE 含 wechatmp / wechatmp_service 时）
+    volumes:
+      - ./cow:/home/agent/cow # 工作区：记忆、知识库等
+      - ./cow-data:/home/agent/.cow # 数据目录：config.json、run.log、微信客服消息游标
