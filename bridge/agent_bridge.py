@@ -1646,7 +1646,7 @@ class AgentBridge:
                 permission_mode=context.get("delegated_permission_mode"),
             )
             if not agent:
-                return Reply(ReplyType.ERROR, "Failed to initialize super agent")
+                return Reply(ReplyType.ERROR, "客服助手初始化失败，请稍后再试或联系人工客服")
 
             # A team conversation is one transcript. Each Agent caches its own
             # in-memory list and only restores it on first init, so a teammate
@@ -1902,7 +1902,7 @@ class AgentBridge:
                     get_steer_registry().unregister(scoped_session_id, steer_inbox)
                 except Exception:
                     pass
-            return Reply(ReplyType.ERROR, f"Agent error: {str(e)}")
+            return Reply(ReplyType.ERROR, f"客服助手处理出错：{str(e)}")
 
         finally:
             self._end_run(run_store, run_id, run_token, run_status, run_error)
